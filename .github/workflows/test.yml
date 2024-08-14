@@ -4,6 +4,9 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
+  wokflow_dispatch:
+
 jobs:
   test:
     timeout-minutes: 60
