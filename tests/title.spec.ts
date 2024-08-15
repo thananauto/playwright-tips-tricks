@@ -26,6 +26,7 @@ test.describe('Check test flow',{ tag: '@pw-test'}, async () => {
         test.fixme(browserName === 'chromium', 'Test need to be fixed')
         await page.goto('https://www.amazon.com')
         await expect( page).toHaveURL(/amazon/)
+        await expect( page).toHaveURL(/amazon/)
         
         
     })
