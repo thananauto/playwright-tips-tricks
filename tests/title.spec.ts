@@ -33,8 +33,6 @@ test.describe('Check test flow',{ tag: '@pw-test'}, async () => {
     test('third test', async ( {page}, testInfo) => {
         await page.goto('https://www.ebay.com')
         await expect( page).toHaveURL(/ebay/)
-        
-        
     })
 
    
