@@ -47,7 +47,9 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
-      run: npx playwright test  --only-changed main
+      run: |
+          git fetch origin main:refs/remotes/origin/main
+          npx playwright test  --only-changed main
 
     - name: Setup Pages
       uses: actions/configure-pages@v5  
