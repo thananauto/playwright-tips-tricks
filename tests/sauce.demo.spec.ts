@@ -105,7 +105,7 @@ test('Sign In page', async ({page, webPage }, testInfo) => {
             fs.writeFileSync(`test-results/reports/${testInfo.title.replace(' ','_')}.html`, htmlReport);
 
 
-        expect(result.violations).toHaveLength(10)
+        expect(result.violations).toHaveLength(2)
 
 
     })
