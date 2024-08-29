@@ -1,0 +1,6 @@
+{
+    "/api/*" : "/$1",
+    "/mobiles/:name" : "/mobiles?name_like=:name",
+    "/reviews/:id" : "/reviews?id=:id"
+  
+}

@@ -3,7 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "scripts": {},
+    "scripts": {
+      "mock-data" : "json-server --watch data/db.json --port 3001 --middlewares ./middleware.js --routes data/routes.json"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
@@ -13,7 +15,8 @@
     },
     "dependencies": {
       "@axe-core/playwright": "^4.9.0",
-      "axe-html-reporter": "^2.2.3"
+      "axe-html-reporter": "^2.2.3",
+      "zod": "^3.23.8"
     }
   }
   
