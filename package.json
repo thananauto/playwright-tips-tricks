@@ -10,10 +10,12 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+      
       "@playwright/test": "^1.46.0",
       "@types/node": "^20.12.8"
     },
     "dependencies": {
+      "json-server": "^0.17.0",
       "@axe-core/playwright": "^4.9.0",
       "axe-html-reporter": "^2.2.3",
       "zod": "^3.23.8"
