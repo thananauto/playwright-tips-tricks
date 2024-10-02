@@ -18,7 +18,9 @@
       "json-server": "^0.17.0",
       "@axe-core/playwright": "^4.9.0",
       "axe-html-reporter": "^2.2.3",
+      "urllib": "^4.3.1",
       "zod": "^3.23.8"
+
     }
   }
   
