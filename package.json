@@ -3,17 +3,22 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "scripts": {},
+    "scripts": {
+      "mock-data" : "json-server --watch data/db.json --port 3001 --middlewares ./middleware.js --routes data/routes.json"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-      "@playwright/test": "^1.43.1",
+      
+      "@playwright/test": "^1.46.0",
       "@types/node": "^20.12.8"
     },
     "dependencies": {
+      "json-server": "^0.17.0",
       "@axe-core/playwright": "^4.9.0",
-      "axe-html-reporter": "^2.2.3"
+      "axe-html-reporter": "^2.2.3",
+      "zod": "^3.23.8"
     }
   }
   
