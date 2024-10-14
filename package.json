@@ -4,23 +4,26 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-      "mock-data" : "json-server --watch data/db.json --port 3001 --middlewares ./middleware.js --routes data/routes.json"
+        "mock-data": "json-server --watch data/db.json --port 3001 --middlewares ./middleware.js --routes data/routes.json"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-      
-      "@playwright/test": "^1.46.0",
-      "@types/node": "^20.12.8"
+        "@eslint/js": "^9.12.0",
+        "@playwright/test": "^1.46.0",
+        "@types/eslint__js": "^8.42.3",
+        "@types/node": "^20.12.8",
+        "eslint": "^9.12.0",
+        "typescript": "^5.6.3",
+        "typescript-eslint": "^8.8.1"
     },
     "dependencies": {
-      "json-server": "^0.17.0",
-      "@axe-core/playwright": "^4.9.0",
-      "axe-html-reporter": "^2.2.3",
-      "urllib": "^4.3.1",
-      "zod": "^3.23.8"
-
+        "@axe-core/playwright": "^4.9.0",
+        "axe-html-reporter": "^2.2.3",
+        "json-server": "^0.17.0",
+        "prettier": "^3.3.3",
+        "urllib": "^4.3.1",
+        "zod": "^3.23.8"
     }
-  }
-  
+}
