@@ -12,6 +12,7 @@ import { Metadata, defineConfig, devices } from '@playwright/test';
  console.log('value '+process.env.GITHUB_CONTEXT)
 let metadata: Metadata = {}
 if(githubContext.sha){
+  
       metadata = {
         'revision.id': '29b089721f5363a33b116cd8f989f471902e575f',
         'revision.author': 'thananauto',
