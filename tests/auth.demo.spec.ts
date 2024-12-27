@@ -11,7 +11,7 @@ test.describe('Basic Authentication with - use option', async()=>{
             
         })
        
-        test('Basic Authetication', async({page}) =>{
+        test('Basic Authetication',  {tag : '@basic' }, async({page}) =>{
 
             await page.goto('/')
             await page.getByRole('link', { name : 'Basic Auth', exact : true}).click();

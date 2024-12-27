@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { Metadata, defineConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -8,7 +8,21 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
- */
+ */const githubContext = JSON.parse(process.env.GITHUB_CONTEXT || '{}');
+let metadata: Metadata = {}
+if(githubContext.sha){
+      metadata = {
+        'revision.id': githubContext?.sha,
+        'revision.author': githubContext.actor,
+        'revision.email': githubContext.event?.pusher?.email,
+        'revision.subject': githubContext.event?.head_commit?.message,
+        'revision.timestamp': githubContext.event?.repository?.updated_at,
+        'revision.link': githubContext.event?.repository?.commits_url,
+        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml',
+        'timestamp': Date.now(),
+      }
+}
+
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -17,6 +31,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+  /* Github meta data */
+  metadata: metadata , 
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
