@@ -16,11 +16,8 @@ if(githubContext.sha){
         'revision.id': '29b089721f5363a33b116cd8f989f471902e575f',
         'revision.author': 'thananauto',
         'revision.email': 'thananjayan1988@gmail.com',
-        'revision.subject': 'Updated code',
-        'revision.timestamp': '2024-12-27T07:36:01Z',
-        'revision.link': 'https://api.github.com/repos/thananauto/playwright-tips-tricks/commits{/sha}',
-        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml',
-        'timestamp': '4:02:04 PM'
+        'revision.subject': 'Updated code'
+       
        }
 }
 
