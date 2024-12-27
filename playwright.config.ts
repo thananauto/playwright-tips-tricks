@@ -13,14 +13,8 @@ let metadata: Metadata = {}
 if(githubContext.sha){
       metadata = {
         'revision.id': githubContext?.sha,
-        'revision.author': githubContext.actor,
-        'revision.email': githubContext.event?.pusher?.email,
-        'revision.subject': githubContext.event?.head_commit?.message,
-        'revision.timestamp': githubContext.event?.repository?.updated_at,
-        'revision.link': githubContext.event?.repository?.commits_url,
-        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml',
-        'timestamp': new Date().toLocaleDateString()+"-"+new Date().toLocaleTimeString()
-      }
+        'revision.author': githubContext.actor
+       }
 }
 
 export default defineConfig({
