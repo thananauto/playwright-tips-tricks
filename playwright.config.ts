@@ -12,12 +12,13 @@ import { Metadata, defineConfig, devices } from '@playwright/test';
  console.log('value '+process.env.GITHUB_CONTEXT)
 let metadata: Metadata = {}
 if(githubContext.sha){
-  
+
       metadata = {
         'revision.id': '29b089721f5363a33b116cd8f989f471902e575f',
         'revision.author': 'thananauto',
         'revision.email': 'thananjayan1988@gmail.com',
-        'revision.subject': 'Updated code'
+        'revision.subject': 'Updated code',
+        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml'
        
        }
 }
