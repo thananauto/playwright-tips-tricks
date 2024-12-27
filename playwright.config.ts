@@ -19,7 +19,7 @@ if(githubContext.sha){
         'revision.timestamp': githubContext.event?.repository?.updated_at,
         'revision.link': githubContext.event?.repository?.commits_url,
         'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml',
-        'timestamp': Date.now(),
+        'timestamp': new Date().toLocaleDateString()+"-"+new Date().toLocaleTimeString()
       }
 }
 
