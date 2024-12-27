@@ -18,8 +18,8 @@ if(githubContext.sha){
         'revision.author': 'thananauto',
         'revision.email': 'thananjayan1988@gmail.com',
         'revision.subject': 'Updated code',
-        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml'
-       
+        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml',
+        'revision.link': 'https://api.github.com/repos/thananauto/playwright-tips-tricks/commits{/sha}',
        }
 }
 
