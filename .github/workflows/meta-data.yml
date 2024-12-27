@@ -39,9 +39,6 @@ jobs:
           ~/.cache/ms-playwright
         key: playwright-${{ hashFiles('package-lock.json') }}
 
-    - name: Set GITHUB_CONTEXT as environment variable
-      run: echo "GITHUB_CONTEXT=$(echo '${{ toJson(github) }}')" >> $GITHUB_ENV
-
     - name: Install dependencies
       id: install-dependencies
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
@@ -53,6 +50,8 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
           npx playwright test  -g '@basic'
 
