@@ -9,6 +9,7 @@ import { Metadata, defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */const githubContext = JSON.parse(process.env.GITHUB_CONTEXT || '{}');
+ console.log('value '+githubContext)
 let metadata: Metadata = {}
 if(githubContext.sha){
       metadata = {
