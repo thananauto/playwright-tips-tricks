@@ -14,12 +14,14 @@ let metadata: Metadata = {}
 if(githubContext.sha){
 
       metadata = {
-        'revision.id': '29b089721f5363a33b116cd8f989f471902e575f',
-        'revision.author': 'thananauto',
-        'revision.email': 'thananjayan1988@gmail.com',
-        'revision.subject': 'Updated code',
-        'ci.link': 'https://github.com/microsoft/playwright/actions/workflows/tests_primary.yml',
-        'revision.link': 'https://api.github.com/repos/thananauto/playwright-tips-tricks/commits{/sha}',
+        'revision.id': githubContext?.sha,
+        'revision.author': githubContext.actor,
+        'revision.email': githubContext.event?.pusher?.email,
+        'revision.subject': githubContext.event?.head_commit?.message,
+        'revision.timestamp': new Date(githubContext.event?.repository?.updated_at),
+        'revision.link': githubContext.event?.repository?.commits_url,
+        'ci.link': 'https://github.com/thananauto/playwright-tips-tricks/actions/workflows/meta-data.yml'
+      
        }
 }
 
