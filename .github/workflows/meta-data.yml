@@ -1,4 +1,4 @@
-name:Display meta details in report vhou,9l07j65g43f21sC ADBSGNFHGJYDHTRSEAWR3EQ2   WQ
+name: Display meta details in report 
 on:
   workflow_dispatch:
   merge_group:
