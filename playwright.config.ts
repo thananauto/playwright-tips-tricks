@@ -18,10 +18,8 @@ if(githubContext.sha){
         'revision.author': githubContext.actor,
         'revision.email': githubContext.event?.pusher?.email,
         'revision.subject': githubContext.event?.head_commit?.message,
-        
         'revision.link': githubContext.event?.repository?.commits_url,
-        'ci.link': 'https://github.com/thananauto/playwright-tips-tricks/actions/workflows/meta-data.yml'
-      
+        'ci.link': 'https://github.com/thananauto/playwright-tips-tricks/actions/runs/'+githubContext.run_id
        }
 }
 
