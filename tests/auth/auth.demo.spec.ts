@@ -85,7 +85,7 @@ test.describe('Digest Authetication using route', async()=>{
     })
 
     const options : RequestOptions ={
-        digestAuth : 'admin:admin',
+        digestAuth : 'admin:fake',
         method: 'GET'
     
     }
