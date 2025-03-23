@@ -27,7 +27,7 @@ test.describe('Basic Authetication with -  Extra HTTP headers', async()=>{
     })
 
 
-    test('Basic Authetication', async({page}) =>{
+    test('Basic Authetication', {tag : '@basic' }, async({page}) =>{
 
         await page.goto('/')
         await page.setExtraHTTPHeaders({
@@ -55,7 +55,7 @@ test.describe('Basic Authetication using route', async()=>{
         }
     }
    
-    test('Digest Authetication - HTTP Headers', async({page}) =>{
+    test('Digest Authetication - HTTP Headers', {tag : '@basic' },  async({page}) =>{
         
         await page.route('**/basic_auth', async(route, req)=>{
             const { res, data }= await request(req.url(), options);
@@ -85,12 +85,12 @@ test.describe('Digest Authetication using route', async()=>{
     })
 
     const options : RequestOptions ={
-        digestAuth : 'admin:admin',
+        digestAuth : 'admin:fake',
         method: 'GET'
     
     }
    
-    test('Digest Authetication ', async({page}) =>{
+    test('Digest Authetication ', {tag : '@basic' }, async({page}) =>{
         
         await page.route('**/digest_auth', async(route, req)=>{
           
