@@ -54,7 +54,7 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
-      continue-on-error: true
+      continue-on-error: false
       run: |
         npx playwright test --grep="@basic" --project=chromium
        
