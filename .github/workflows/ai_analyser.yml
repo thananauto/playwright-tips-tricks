@@ -70,10 +70,9 @@ jobs:
     - uses: mshick/add-pr-comment@v2
       if: (failure() || success()) 
       with:
-          message: |
-            **Howdie!**
-          message-failure: |
-            Build status
+          message-path: |
+            ./summary.txt
+          
 
     - name: Setup Pages
       if: failure()
