@@ -1,26 +1,153 @@
-# playwright-tips-tricks
-This repo consist of best practises and code which we might usefull in our day to life.
+# Playwright Tips & Tricks
 
-## Installation
-1. Clone this project
-2. Run `npm install` to install all dependencies
-3. Install the chromium browser `npx playwright install chromium`
-4. Run the test `npx playwright test`
-5. After successsfull execution, we can find reports in `playwright-report` and `test-result` 
+This repository consists of best practices, useful code snippets, and advanced techniques that can be applied in our day-to-day Playwright automation testing. Whether you are working on UI automation, API testing, accessibility testing, authentication handling, localization, or advanced test strategies, this repository provides ready-to-use solutions.
+
+## 📌 Installation
+
+To set up and run the tests in this repository, follow these steps:
+
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/your-repo/playwright-tips-tricks.git
+   cd playwright-tips-tricks
+   ```
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+3. **Install Playwright browsers (Chromium, Firefox, WebKit):**
+   ```sh
+   npx playwright install chromium
+   ```
+4. **Run the tests:**
+   ```sh
+   npx playwright test
+   ```
+5. **View test reports:**
+   - After successful execution, Playwright generates reports in the following locations:
+     - **HTML Report:** `playwright-report/`
+     - **Test Results (JSON, traces, and screenshots):** `test-results/`
+
+## 📂 Repository Contents
+
+All test-related code is organized inside the `tests` folder. Below is an overview of the key topics covered in this repository:
+
+### 1️⃣ Accessibility Testing (`accessibility/`)
+- Playwright allows checking web accessibility compliance using industry standards such as **WCAG 2.0 (A, AA, AAA)**.
+- Code snippets in this folder help in evaluating the accessibility score of your application.
+- Example:
+   ```typescript
+   await page.accessibility.snapshot();
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/lighthouse-accessibility-test-by-playwright-e5258eb9f3ba)
+
+### 2️⃣ API Testing (`api/`)
+- Playwright supports API testing and response validation alongside UI automation.
+- This folder includes examples of how to:
+  - **Mock API responses**
+  - **Intercept network requests**
+  - **Validate API behavior in different scenarios**
+- Example:
+   ```typescript
+   await page.route('**/api/users', async (route) => {
+       await route.fulfill({ json: { id: 1, name: 'John Doe' } });
+   });
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/playwright-mastery-integrating-web-servers-api-schemas-geolocation-and-localization-d6de093b6a4e)
+
+### 3️⃣ Authentication Testing (`auth/`)
+- Covers bypassing authentication mechanisms such as:
+  - **Basic Authentication**
+  - **Digest Authentication**
+- This is useful when testing protected routes without manually entering credentials.
+- Example:
+   ```typescript
+   await page.authenticate({ username: 'user', password: 'pass' });
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/web-authentication-with-playwright-basic-and-digest-explained-aab9ce78dc3e)
+
+### 4️⃣ Broken Link Detection (`brokenlinks/`)
+- Includes scripts to scan a webpage and identify broken links by checking HTTP response status codes.
+- Useful for SEO testing and web maintenance.
+- Example:
+   ```typescript
+   const response = await page.goto(url);
+   if (response.status() !== 200) {
+       console.log(`Broken link detected: ${url}`);
+   }
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/automatic-broken-link-detection-with-playwright-a241a6f41973)
+
+### 5️⃣ Custom Locator Implementation (`customlocator/`)
+- Demonstrates how to create custom locators in Playwright for non-standard UI elements.
+- Example:
+   ```typescript
+   class CustomLocator extends Locator {
+       async customMethod() {
+           return this.locator('.custom-element').click();
+       }
+   }
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/how-to-write-custom-selector-in-playwright-4bd96e8e559f)
+
+### 6️⃣ Dynamic Class Loading (`dynamicClassLoad/`)
+- Shows how to load different page object classes dynamically to handle localized web applications.
+- Uses Playwright fixtures to load classes dynamically.
+- Refer my article [here](https://medium.com/@thananjayan1988/optimizing-playwright-tests-with-dynamic-page-object-loading-dfda67be81e4)
+
+### 7️⃣ Localization Testing (`localisation/`)
+- Includes examples of testing multilingual applications across different regions.
+- Demonstrates how to:
+  - **Change browser language settings**
+  - **Validate translated content**
+- Example:
+   ```typescript
+   await page.evaluate(() => navigator.language);
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/playwright-mastery-alert-slider-drag-and-drop-handler-and-evaluate-part-ii-ecd14bd5e2cb)
 
 
-## Contents
+### 8️⃣ UI Mocking (`uimock/`)
+- Explains how to mock API responses on the frontend for edge-case scenario testing.
+- Helps in creating test environments without an actual backend.
+- Example:
+   ```typescript
+   await page.route('**/api/products', (route) => {
+       route.fulfill({ json: { products: [] } });
+   });
+   ```
+- Refer my article [here](https://medium.com/@thananjayan1988/playwright-mastery-integrating-web-servers-api-schemas-geolocation-and-localization-d6de093b6a4e)
 
-Under the `tests` folder
-* `accessability` - Code snippets for to find accesability score of the test application by using the standars `wcag2a`,`wcag2aa`.
-* `api` - Sample code snippets to do API test with mocking the test data
-* `auth` - Different ways to bypass `Basic` and `Digest` authentication
-* `brokenlinks` - Code snippets to find broken url in the webpage
-* `customlocator` - Example to show how can create a custom locator, then register and how to use in test method
-*  `dynamicClassLoad` - Test method for how to use same test for different localised website, refer fixture and `pages` folder for dependency
-* `localisation` - How to test different localised websites
-* `uimock` - Mock UI API resonse and how to validate the edge scenarios in testing.
+### 9️⃣ Report analysis by AI
+- Ask the AI to analyse the `**.json` report
+- Add the Summary report as PR comment for every build breaks
+- Refer my article [here](https://medium.com/@thananjayan1988)
 
+## 📌 Contribution Guidelines
 
+🚀 **Want to contribute?** If you have any useful Playwright tips or code snippets, feel free to **submit a PR**!
 
-If you like to contribute with any new topic, please create a PR with code or changes. And if you want me to add any new topic drop a note at thananjayan1988@gmail.com or text me in [linkedin](https://www.linkedin.com/in/thananjayan-rajasekaran/)
+1. **Fork the repository**
+2. **Create a feature branch**
+3. **Add your code and documentation**
+4. **Submit a Pull Request (PR)**
+
+💡 If you have suggestions for new topics, reach out to me via email at **thananjayan1988@gmail.com** or send a message on [LinkedIn](https://www.linkedin.com/in/thananjayan-rajasekaran/).
+
+## 📖 Additional Resources
+
+📌 Here are some of my Playwright-related articles that you may find useful:
+
+- [Executing Tests on Remote Browser and Browser in Servers](https://medium.com/@thananjayan1988/playwright-executing-tests-on-remote-browser-and-browser-in-servers-48c9979b5b4f)
+- [Reusing Browser Sessions for Debugging in Playwright](https://medium.com/@thananjayan1988/reusing-browser-sessions-for-debugging-in-playwright-bac94cd6d999)
+- [Efficient Playwright test execution in minimal docker images](https://medium.com/@thananjayan1988/optimize-the-docker-image-for-playwright-tests-3688c7d4be5f)
+- [Live Visualization of Test Results Using Playwright and InfluxDB 2.0](https://medium.com/@thananjayan1988/live-visualization-of-test-results-using-playwright-and-influxdb-2-0-2a193656dda2)
+- [Integrating Playwright in CI with GitHub Actions and Docker](https://medium.com/@thananjayan1988/integrating-playwright-in-ci-with-github-actions-and-docker-7baafe76de99)
+
+📌 **Stay updated with more Playwright tips & insights by following me on** [Medium](https://medium.com/@thananjayan1988)! 🚀
+
+## 📌 License
+
+This project is licensed under the **MIT License** – you are free to use, modify, and distribute the code with proper attribution.
+
+### 🎯 Happy Testing with Playwright! 🚀
