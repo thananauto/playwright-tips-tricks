@@ -59,6 +59,7 @@ jobs:
         npx playwright test --grep="@basic" --project=chromium
        
     - name: Run the AI analyzer
+      if: failure() || success()
       continue-on-error: true
       run: |
         npm run ai:analyze
@@ -66,7 +67,7 @@ jobs:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   
     - uses: mshick/add-pr-comment@v2
-      if: success() || failure()
+      if: (failure() || success()) &&  github.event_name == 'pull_request'
       with:
           message-path: |
             ./summary.txt
