@@ -66,7 +66,7 @@ jobs:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   
     - uses: mshick/add-pr-comment@v2
-      if: always() &&  github.event_name == 'pull_request'
+      if: (success() || failure()) &&  github.event_name == 'pull_request'
       with:
           message-path: |
             ./summary.txt
