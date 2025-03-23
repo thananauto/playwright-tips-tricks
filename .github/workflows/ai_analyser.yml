@@ -63,6 +63,7 @@ jobs:
       continue-on-error: true
       run: |
         npm run ai:analyze
+        cat summary.txt
       env: 
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   
