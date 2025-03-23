@@ -8,6 +8,7 @@
         "ai:analyze": "npx ts-node utility/claude.ai.analyser.ts"
     },
     "keywords": [],
+    "type": "commonjs",
     "author": "",
     "license": "ISC",
     "devDependencies": {
