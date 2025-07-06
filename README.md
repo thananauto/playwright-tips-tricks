@@ -121,7 +121,12 @@ All test-related code is organized inside the `tests` folder. Below is an overvi
 ### 9️⃣ Report analysis by AI
 - Ask the AI to analyse the `**.json` report
 - Add the Summary report as PR comment for every build breaks
-- Refer my article [here](https://medium.com/@thananjayan1988)
+- Refer my article [here]([https://medium.com/@thananjayan1988](https://medium.com/@thananjayan1988/ai-powered-test-report-analysis-generating-execution-summaries-5010dbbb1991))
+
+### 🔟 Configure your test data in different places in framework
+- Explains how to configure test data based on different scenario
+- And explain the each use cases with exammple
+- Refer this article for more [details](https://medium.com/@thananjayan1988/efficiently-configuring-test-data-in-playwright-framework-65b1d3ad6bb6)
 
 ## 📌 Contribution Guidelines
 
@@ -143,6 +148,8 @@ All test-related code is organized inside the `tests` folder. Below is an overvi
 - [Efficient Playwright test execution in minimal docker images](https://medium.com/@thananjayan1988/optimize-the-docker-image-for-playwright-tests-3688c7d4be5f)
 - [Live Visualization of Test Results Using Playwright and InfluxDB 2.0](https://medium.com/@thananjayan1988/live-visualization-of-test-results-using-playwright-and-influxdb-2-0-2a193656dda2)
 - [Integrating Playwright in CI with GitHub Actions and Docker](https://medium.com/@thananjayan1988/integrating-playwright-in-ci-with-github-actions-and-docker-7baafe76de99)
+- [Report portal integration with Playwright](https://medium.com/@thananjayan1988/report-portal-with-playwright-typescript-5f0d69bfe202)
+- [Playwright test in Jenkins CI](https://medium.com/@thananjayan1988/ci-cd-pipeline-running-playwright-tests-in-jenkins-with-docker-f9f08fda4bfc)
 
 📌 **Stay updated with more Playwright tips & insights by following me on** [Medium](https://medium.com/@thananjayan1988)! 🚀
 
