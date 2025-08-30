@@ -128,6 +128,12 @@ All test-related code is organized inside the `tests` folder. Below is an overvi
 - And explain the each use cases with exammple
 - Refer this article for more [details](https://medium.com/@thananjayan1988/efficiently-configuring-test-data-in-playwright-framework-65b1d3ad6bb6)
 
+### 1️⃣1️⃣ Analyse the HAR to capture network error
+- Capture the slow request, failed endpoints as part of UI test
+- Record those details in HTML report
+- Added custom fixture to capture this details
+- Refer this article for more [details](https://medium.com/@thananjayan1988/efficiently-configuring-test-data-in-playwright-framework-65b1d3ad6bb6)
+
 ## 📌 Contribution Guidelines
 
 🚀 **Want to contribute?** If you have any useful Playwright tips or code snippets, feel free to **submit a PR**!
