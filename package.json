@@ -5,7 +5,15 @@
     "main": "index.js",
     "scripts": {
         "mock-data": "json-server --watch data/db.json --port 3001 --middlewares ./middleware.js --routes data/routes.json",
-        "ai:analyze": "npx ts-node utility/claude.ai.analyser.ts"
+        "ai:analyze": "npx ts-node utility/claude.ai.analyser.ts",
+        "test": "playwright test",
+        "test:headed": "npx playwright test --headed",
+        "test:ui": "npx playwright test --ui",
+        "test:accessibility": "npx playwright test tests/accessibility",
+        "test:api": "npx playwright test tests/api",
+        "report": "npx playwright show-report",
+        "lint": "eslint tests/**/*.ts",
+        "format": "prettier --write tests/**/*.ts"
     },
     "keywords": [],
     "type": "commonjs",
