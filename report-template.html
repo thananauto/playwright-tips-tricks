@@ -1,0 +1,2137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playwright Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primary brand colors - Cool blue palette */
+            --primary-color: #0284C7;
+            --primary-dark: #075985;
+            --primary-light: #125a7d;
+            
+            /* Semantic colors - Optimized for data visualization */
+            --success-color: #059669;
+            --danger-color: #DC2626;
+            --warning-color: #D97706;
+            --info-color: #0284C7;
+            --flaky-color: #9333EA;
+            
+            /* Action colors */
+            --button-color: #0284C7;
+            --button-hover: #0369A1;
+            --secondary-color: #6366F1;
+            
+            /* Background colors - Light cool theme */
+            --light-bg: #F0F9FF;
+            --card-bg: #e1e5f0;
+            --card-hover: #E0F2FE;
+            --bg-secondary: #66819c;
+            
+            /* Text colors - Dark for readability on light */
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-muted: #64748B;
+            
+            /* Border colors */
+            --border-color: #CBD5E1;
+            --border-light: #E2E8F0;
+            
+            /* Shadows - Subtle depth */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Accent colors for charts */
+            --accent-teal: #14B8A6;
+            --accent-orange: #F97316;
+            --accent-pink: #EC4899;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+            transition: background 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0369A1 0%, #0284C7 50%, #0EA5E9 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--primary-light);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-filter-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-filter-container label {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        #project-filter {
+            padding: 10px 40px 10px 16px;
+            background: white;
+            color: #0F172A;
+            border: 2px solid #CBD5E1;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 200px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%230F172A' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #project-filter:hover {
+            background: white;
+            box-shadow: 0 4px 12px rgba(46, 94, 170, 0.3);
+            transform: translateY(-1px);
+            border-color: var(--primary-light);
+        }
+
+        #project-filter:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(46, 94, 170, 0.2), 0 4px 12px rgba(46, 94, 170, 0.3);
+            transform: translateY(-1px);
+        }
+
+        #project-filter option {
+            padding: 12px;
+            background: white;
+            color: #0F172A;
+            font-weight: 500;
+        }
+
+        #project-filter option:hover {
+            background: #E0F2FE;
+        }
+
+        [data-theme="dark"] .project-filter-container {
+            background: transparent;
+            border: none;
+        }
+
+        [data-theme="dark"] #project-filter {
+            background: rgba(42, 42, 42, 0.95);
+            color: #F5E8D8;
+            border-color: rgba(255, 111, 97, 0.4);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23FF6F61' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="dark"] #project-filter:hover {
+            background: rgba(42, 42, 42, 1);
+            box-shadow: 0 6px 16px rgba(255, 111, 97, 0.4);
+            border-color: #FF6F61;
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] #project-filter:focus {
+            border-color: #FF6F61;
+            box-shadow: 0 0 0 4px rgba(255, 111, 97, 0.2), 0 6px 16px rgba(255, 111, 97, 0.4);
+        }
+
+        [data-theme="dark"] #project-filter option {
+            background: #2a2a2a;
+            color: #F5E8D8;
+        }
+
+        [data-theme="dark"] #project-filter option:hover {
+            background: #3a3a3a;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--light-bg);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 18px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .tab:last-child {
+            border-right: none;
+        }
+
+        .tab:hover {
+            background: var(--card-hover);
+            color: var(--primary-light);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(46, 94, 170, 0.15), rgba(59, 130, 246, 0.1));
+            color: var(--primary-light);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                width: 0;
+                left: 50%;
+            }
+            to {
+                width: 100%;
+                left: 0;
+            }
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Summary Layout */
+        .summary-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+            background: var(--light-bg);
+        }
+
+        .chart-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chart-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .chart-section h2 {
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            align-content: start;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: var(--card-hover);
+            border-color: var(--border-light);
+        }
+
+        .stat-card.clickable {
+            cursor: pointer;
+        }
+
+        .stat-card.clickable::after {
+            content: '→';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card.clickable:hover::after {
+            opacity: 0.3;
+            right: 15px;
+        }
+
+        .stat-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-card.passed .value { color: var(--success-color); }
+        .stat-card.failed .value { color: var(--danger-color); }
+        .stat-card.skipped .value { color: var(--warning-color); }
+        .stat-card.flaky .value { color: var(--info-color); }
+
+        /* Tag Table */
+        .tag-table-container {
+            padding: 30px;
+            background: var(--card-bg);
+        }
+
+        .tag-table-container h2 {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .tag-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .tag-table th,
+        .tag-table td {
+            padding: 16px;
+            text-align: left;
+        }
+
+        .tag-table th {
+            background: linear-gradient(135deg, #0369A1, #0284C7);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .tag-table tbody tr {
+            background: var(--card-bg);
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tag-table tbody tr:nth-child(even) {
+            background: #F0F9FF;
+        }
+
+        .tag-table tbody tr:hover {
+            background: var(--card-hover);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Filters */
+        .filters {
+            padding: 20px 30px;
+            background: var(--light-bg);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 60px;
+            z-index: 99;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-light);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(46, 94, 170, 0.2);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--card-hover);
+            box-shadow: 0 0 0 3px rgba(46, 94, 170, 0.2);
+        }
+
+        /* Tests List */
+        .tests-list-container {
+            display: flex;
+            height: calc(100vh - 400px);
+            min-height: 600px;
+            background: var(--light-bg);
+        }
+
+        .tests-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        /* Custom Scrollbar */
+        .tests-list::-webkit-scrollbar,
+        .test-details-sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tests-list::-webkit-scrollbar-track,
+        .test-details-sidebar::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        .tests-list::-webkit-scrollbar-thumb,
+        .test-details-sidebar::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .tests-list::-webkit-scrollbar-thumb:hover,
+        .test-details-sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .test-list-item {
+            padding: 18px;
+            margin-bottom: 12px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid transparent;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .test-list-item::after {
+            content: '›';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: var(--text-secondary);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .test-list-item:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(8px);
+        }
+
+        .test-list-item:hover::after {
+            opacity: 1;
+            right: 15px;
+        }
+
+        .test-list-item.selected {
+            border-left-color: var(--primary-color);
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.05), white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .test-list-item.passed {
+            border-left-color: var(--success-color);
+        }
+
+        .test-list-item.failed {
+            border-left-color: var(--danger-color);
+        }
+
+        .test-list-item.flaky {
+            border-left-color: var(--info-color);
+        }
+
+        .test-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1.05em;
+            line-height: 1.4;
+        }
+
+        .test-item-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .test-status {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-passed { 
+            background: #047857;
+            color: white;
+            font-weight: 600;
+        }
+        .status-failed { 
+            background: #DC2626;
+            color: white;
+            font-weight: 600;
+        }
+        .status-skipped { 
+            background: #D97706;
+            color: white;
+            font-weight: 600;
+        }
+        .status-flaky { 
+            background: #7C3AED;
+            color: white;
+            font-weight: 600;
+        }
+
+        .test-duration {
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .test-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+
+        /* Test Details Sidebar */
+        .test-details-sidebar {
+            width: 0;
+            overflow: hidden;
+            background: var(--card-bg);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 2px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .test-details-sidebar.active {
+            width: 50%;
+            overflow-y: auto;
+        }
+
+        .test-details-content {
+            padding: 30px;
+        }
+
+        .test-details-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .test-details-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .close-details {
+            float: right;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .close-details:hover {
+            background: #e53e3e;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Retry Tabs */
+        .retry-tabs-container {
+            margin-bottom: 25px;
+        }
+
+        .retry-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .retry-tab {
+            padding: 10px 20px;
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .retry-tab:hover {
+            background: var(--card-hover);
+            border-color: var(--primary-color);
+        }
+
+        .retry-tab.active {
+            background: var(--card-hover);
+            border-color: var(--primary-color);
+            color: var(--primary-light);
+            border-bottom-color: var(--card-hover);
+            margin-bottom: -2px;
+        }
+
+        .retry-tab-icon {
+            font-size: 1.2em;
+        }
+
+        .retry-content {
+            display: none;
+        }
+
+        .retry-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .test-steps {
+            margin-bottom: 25px;
+        }
+
+        .test-steps h3 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .step-item {
+            padding: 14px;
+            margin: 8px 0;
+            background: var(--light-bg);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .step-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .step-item.step-passed {
+            border-left-color: var(--success-color);
+            background: rgba(72, 187, 120, 0.05);
+        }
+
+        .step-item.step-failed {
+            border-left-color: var(--danger-color);
+            background: rgba(245, 101, 101, 0.05);
+        }
+
+        .step-icon {
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+
+        .error-section {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #7F1D1D;
+        }
+
+        .error-section h3 {
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #991B1B;
+        }
+
+        .error-section pre {
+            background: #FEF2F2;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 12px;
+            border: 1px solid var(--border-color);
+            color: #0F172A;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .attachments {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .attachments h3 {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .attachment-btn {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .attachment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .console-log {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            margin-top: 20px;
+            line-height: 1.6;
+            box-shadow: var(--shadow-md);
+        }
+
+        .console-log h3 {
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        /* Errors Tab */
+        .errors-container {
+            padding: 30px;
+            background: var(--light-bg);
+        }
+
+        .error-item {
+            padding: 24px;
+            margin-bottom: 16px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .error-item:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(8px);
+        }
+
+        .error-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .error-count {
+            background: var(--danger-color);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .error-message {
+            color: #991b1b;
+            font-weight: 600;
+            font-size: 1.1em;
+            flex: 1;
+        }
+
+        .error-tests {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .error-test-link {
+            display: block;
+            padding: 8px 0;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+        }
+
+        .error-test-link:hover {
+            color: var(--primary-dark);
+            padding-left: 8px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.3em;
+            color: var(--text-secondary);
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Media Overlay */
+        .media-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .media-overlay.active {
+            display: flex;
+        }
+
+        .media-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .media-container img,
+        .media-container video {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .media-title {
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+
+        .close-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-light);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10001;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .close-overlay:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .summary-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+                top: 0;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .tests-list-container {
+                flex-direction: column;
+            }
+
+            .test-details-sidebar.active {
+                width: 100%;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header > div {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 20px;
+            }
+
+            .header > div > div:first-child {
+                text-align: center !important;
+                width: 100%;
+            }
+
+            .project-filter-container {
+                max-width: 100% !important;
+                width: 100%;
+                justify-content: center !important;
+            }
+
+            .stat-card .value {
+                font-size: 2em;
+            }
+        }
+
+        /* Loading Pulse Animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; position: relative; z-index: 2;">
+                <div style="text-align: left;">
+                    <h1 style="margin-bottom: 8px;">🎭 Playwright Test Report</h1>
+                    <p style="margin: 0;">Interactive Test Results Dashboard</p>
+                </div>
+                
+                <div class="project-filter-container" style="margin: 0;">
+                    <select id="project-filter">
+                        <option value="all">📁 All Projects</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="hidden">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('summary')">📊 Summary</button>
+                <button class="tab" onclick="switchTab('tests')">🧪 Test Cases</button>
+                <button class="tab" onclick="switchTab('errors')">⚠️ Errors</button>
+            </div>
+
+            <!-- Tab 1: Summary -->
+            <div id="summary-tab" class="tab-content active">
+                <!-- Summary Layout: Chart Left, Stats Right -->
+                <div class="summary-layout">
+                    <!-- Left: Chart -->
+                    <div class="chart-section">
+                        <h2>Test Results Distribution</h2>
+                        <canvas id="resultsChart"></canvas>
+                    </div>
+
+                    <!-- Right: Stats Cards -->
+                    <div class="stats-section">
+                        <div class="stat-card">
+                            <h3>Total Tests</h3>
+                            <div class="value" id="total-tests">0</div>
+                        </div>
+                        <div class="stat-card passed clickable" onclick="filterByStatus('expected')">
+                            <h3>Passed</h3>
+                            <div class="value" id="passed-tests">0</div>
+                        </div>
+                        <div class="stat-card failed clickable" onclick="filterByStatus('unexpected')">
+                            <h3>Failed</h3>
+                            <div class="value" id="failed-tests">0</div>
+                        </div>
+                        <div class="stat-card skipped clickable" onclick="filterByStatus('skipped')">
+                            <h3>Skipped</h3>
+                            <div class="value" id="skipped-tests">0</div>
+                        </div>
+                        <div class="stat-card flaky clickable" onclick="filterByStatus('flaky')">
+                            <h3>Flaky</h3>
+                            <div class="value" id="flaky-tests">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Start Time</h3>
+                            <div class="value" style="font-size: 1em;" id="start-time">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>End Time</h3>
+                            <div class="value" style="font-size: 1em;" id="end-time">-</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Duration</h3>
+                            <div class="value" style="font-size: 1.5em;" id="duration">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tag Summary Table -->
+                <div class="tag-table-container">
+                    <h2>Test Results by Tags</h2>
+                    <table class="tag-table">
+                        <thead>
+                            <tr>
+                                <th>Tag</th>
+                                <th>Passed</th>
+                                <th>Failed</th>
+                                <th>Skipped</th>
+                                <th>Flaky</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tag-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 2: Test Cases -->
+            <div id="tests-tab" class="tab-content">
+                <!-- Filters Section -->
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="expected">✅ Passed</button>
+                    <button class="filter-btn" data-filter="unexpected">❌ Failed</button>
+                    <button class="filter-btn" data-filter="skipped">⏭️ Skipped</button>
+                    <button class="filter-btn" data-filter="flaky">⚠️ Flaky</button>
+                    <input type="text" class="search-box" id="search-box" placeholder="🔍 Search tests...">
+                </div>
+
+                <!-- Tests List and Details -->
+                <div class="tests-list-container">
+                    <div class="tests-list" id="tests-list"></div>
+                    <div class="test-details-sidebar" id="test-details-sidebar">
+                        <div class="test-details-content" id="test-details-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Errors -->
+            <div id="errors-tab" class="tab-content">
+                <div class="errors-container" id="errors-container"></div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading test report
+        </div>
+    </div>
+
+    <!-- Media Overlay -->
+    <div class="media-overlay" id="media-overlay">
+        <button class="close-overlay" onclick="closeMediaOverlay()">✕</button>
+        <div class="media-container" id="media-container">
+            <div class="media-title" id="media-title"></div>
+            <div id="media-content"></div>
+        </div>
+    </div>
+
+    <script>
+        let reportData = null;
+        let currentFilter = 'all';
+        let currentProject = 'all';
+        let searchTerm = '';
+        let currentTab = 'summary';
+        let chartInstance = null; // Store chart instance for updates
+
+        // Load results.json automatically on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('results.json');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load results.json');
+                }
+
+                const rawData = await response.json();
+                reportData = parsePlaywrightReport(rawData);
+                renderReport();
+            } catch (error) {
+                console.error('Error loading report:', error);
+                document.getElementById('loading').textContent = 'Error loading report: ' + error.message;
+            }
+        });
+
+        // Parse Playwright JSON report
+        function parsePlaywrightReport(jsonData) {
+            const stats = jsonData.stats || {};
+            const suites = jsonData.suites || [];
+            
+            const allTests = [];
+            const errorSummary = {};
+            const tagSummary = {};
+            
+            function extractTests(suiteList, parentTitle = '') {
+                for (const suite of suiteList) {
+                    const suiteTitle = suite.title || '';
+                    const fullTitle = parentTitle ? `${parentTitle}/${suiteTitle}` : suiteTitle;
+                    
+                    for (const spec of suite.specs || []) {
+                        const testInfo = {
+                            id: spec.id || '',
+                            title: spec.title || '',
+                            file: spec.file || '',
+                            line: spec.line || 0,
+                            column: spec.column || 0,
+                            tags: spec.tags || [],
+                            ok: spec.ok || false,
+                            status: 'unknown',
+                            suite: fullTitle,
+                            projectName: '',
+                            tests: []
+                        };
+                        
+                        // Collect all test results
+                        for (const test of spec.tests || []) {
+                            // Extract projectName from the first test result
+                            if (!testInfo.projectName && test.projectName) {
+                                testInfo.projectName = test.projectName;
+                            }
+                            
+                            for (const result of test.results || []) {
+                                const testResult = {
+                                    status: result.status || 'unknown',
+                                    duration: result.duration || 0,
+                                    startTime: result.startTime || '',
+                                    error: result.error || {},
+                                    errors: result.errors || [],
+                                    stdout: result.stdout || [],
+                                    stderr: result.stderr || [],
+                                    steps: result.steps || [],
+                                    attachments: result.attachments || [],
+                                    errorLocation: result.errorLocation || {}
+                                };
+                                testInfo.tests.push(testResult);
+                                
+                                if ((result.status === 'failed' || result.status === 'timedOut') && result.error) {
+                                    const errorMsg = result.error.message || 'Unknown error';
+                                    const errorKey = errorMsg.split('\n')[0].substring(0, 100);
+                                    errorSummary[errorKey] = (errorSummary[errorKey] || 0) + 1;
+                                }
+                            }
+                        }
+                        
+                        // Determine test status: flaky if multiple attempts with at least one failure and one pass
+                        let testStatus = 'unknown';
+                        if (testInfo.tests.length > 0) {
+                            const statuses = testInfo.tests.map(t => t.status);
+                            const hasFailed = statuses.some(s => s === 'failed' || s === 'timedOut');
+                            const hasPassed = statuses.some(s => s === 'passed');
+                            const hasSkipped = statuses.every(s => s === 'skipped');
+                            
+                            if (testInfo.tests.length > 1 && hasFailed && hasPassed) {
+                                // Flaky: multiple attempts with at least one failure and one pass
+                                testStatus = 'flaky';
+                            } else if (hasSkipped) {
+                                testStatus = 'skipped';
+                            } else if (testInfo.tests[0].status === 'passed') {
+                                testStatus = 'expected';
+                            } else if (testInfo.tests[0].status === 'failed' || testInfo.tests[0].status === 'timedOut') {
+                                testStatus = 'unexpected';
+                            } else if (testInfo.tests[0].status === 'skipped') {
+                                testStatus = 'skipped';
+                            } else {
+                                testStatus = testInfo.tests[0].status;
+                            }
+                        }
+                        
+                        testInfo.status = testStatus;
+                        
+                        // Update tag summary
+                        for (const tag of spec.tags || []) {
+                            if (!tagSummary[tag]) {
+                                tagSummary[tag] = { passed: 0, failed: 0, skipped: 0, flaky: 0 };
+                            }
+                            if (testStatus === 'expected') {
+                                tagSummary[tag].passed++;
+                            } else if (testStatus === 'unexpected') {
+                                tagSummary[tag].failed++;
+                            } else if (testStatus === 'skipped') {
+                                tagSummary[tag].skipped++;
+                            } else if (testStatus === 'flaky') {
+                                tagSummary[tag].flaky++;
+                            }
+                        }
+                        
+                        allTests.push(testInfo);
+                    }
+                    
+                    if (suite.suites && suite.suites.length > 0) {
+                        extractTests(suite.suites, fullTitle);
+                    }
+                }
+            }
+            
+            extractTests(suites);
+            
+            return {
+                stats: {
+                    total: stats.expected + stats.unexpected + stats.flaky || 0,
+                    passed: stats.expected || 0,
+                    failed: stats.unexpected || 0,
+                    skipped: stats.skipped || 0,
+                    flaky: stats.flaky || 0,
+                    startTime: stats.startTime || '',
+                    endTime: new Date(new Date(stats.startTime).getTime() + (stats.duration || 0)).toISOString(),
+                    duration: (stats.duration || 0) / 1000
+                },
+                tests: allTests,
+                allTests: allTests, // Store original unfiltered tests
+                errorSummary: errorSummary,
+                tagSummary: tagSummary
+            };
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            // Close test details sidebar when switching tabs
+            closeTestDetails();
+            
+            // Reset filter to "All" when switching to Test Cases tab
+            if (tabName === 'tests') {
+                currentFilter = 'all';
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.filter === 'all') {
+                        btn.classList.add('active');
+                    }
+                });
+                renderTestsTab();
+            }
+        }
+
+        function filterByStatus(status) {
+            currentTab = 'tests';
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab')[1].classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('tests-tab').classList.add('active');
+
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('active');
+                }
+            });
+
+            renderTestsTab();
+        }
+
+        function renderReport() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+
+            populateProjectFilter();
+            renderSummaryTab();
+            renderTestsTab();
+            renderErrorsTab();
+        }
+
+        function populateProjectFilter() {
+            const projectFilter = document.getElementById('project-filter');
+            const projects = new Set();
+            
+            // Extract unique project names from test data
+            reportData.tests.forEach(test => {
+                if (test.projectName) {
+                    projects.add(test.projectName);
+                }
+            });
+            
+            // Clear existing options except "All Projects"
+            projectFilter.innerHTML = '<option value="all">📁 All Projects</option>';
+            
+            // If no projects found, keep only "All Projects"
+            if (projects.size > 0) {
+                // Add project options sorted alphabetically
+                Array.from(projects).sort().forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project;
+                    option.textContent = `📁 ${project}`;
+                    projectFilter.appendChild(option);
+                });
+            }
+            
+            // Add change event listener (remove old listeners first)
+            const newFilter = projectFilter.cloneNode(true);
+            projectFilter.parentNode.replaceChild(newFilter, projectFilter);
+            
+            newFilter.addEventListener('change', function() {
+                currentProject = this.value;
+                // Recalculate everything based on selected project
+                recalculateDataForProject();
+            });
+        }
+
+        function recalculateDataForProject() {
+            // Filter tests by project
+            const filteredTests = currentProject === 'all' 
+                ? reportData.allTests 
+                : reportData.allTests.filter(test => test.projectName === currentProject);
+            
+            // Recalculate stats
+            let passed = 0, failed = 0, skipped = 0, flaky = 0;
+            let earliestStart = null;
+            let latestEnd = null;
+            let totalDuration = 0;
+            const errorSummary = {};
+            const tagSummary = {};
+            
+            filteredTests.forEach(test => {
+                // Count by status
+                if (test.status === 'expected') passed++;
+                else if (test.status === 'unexpected') failed++;
+                else if (test.status === 'skipped') skipped++;
+                else if (test.status === 'flaky') flaky++;
+                
+                // Calculate time ranges and duration
+                test.tests.forEach(result => {
+                    if (result.startTime) {
+                        const startTime = new Date(result.startTime);
+                        if (!earliestStart || startTime < earliestStart) {
+                            earliestStart = startTime;
+                        }
+                        
+                        const endTime = new Date(startTime.getTime() + result.duration);
+                        if (!latestEnd || endTime > latestEnd) {
+                            latestEnd = endTime;
+                        }
+                    }
+                    
+                    totalDuration += result.duration || 0;
+                    
+                    // Rebuild error summary (treat timedOut as failed)
+                    if ((result.status === 'failed' || result.status === 'timedOut') && result.error) {
+                        const errorMsg = result.error.message || 'Unknown error';
+                        const errorKey = errorMsg.split('\n')[0].substring(0, 100);
+                        errorSummary[errorKey] = (errorSummary[errorKey] || 0) + 1;
+                    }
+                });
+                
+                // Rebuild tag summary
+                test.tags.forEach(tag => {
+                    if (!tagSummary[tag]) {
+                        tagSummary[tag] = { passed: 0, failed: 0, skipped: 0, flaky: 0 };
+                    }
+                    if (test.status === 'expected') tagSummary[tag].passed++;
+                    else if (test.status === 'unexpected') tagSummary[tag].failed++;
+                    else if (test.status === 'skipped') tagSummary[tag].skipped++;
+                    else if (test.status === 'flaky') tagSummary[tag].flaky++;
+                });
+            });
+            
+            // Update reportData with filtered data
+            reportData.tests = filteredTests;
+            reportData.stats.passed = passed;
+            reportData.stats.failed = failed;
+            reportData.stats.skipped = skipped;
+            reportData.stats.flaky = flaky;
+            reportData.stats.total = passed + failed + flaky;
+            
+            // Update time and duration
+            if (earliestStart) {
+                reportData.stats.startTime = earliestStart.toISOString();
+            }
+            if (latestEnd) {
+                reportData.stats.endTime = latestEnd.toISOString();
+            }
+            if (earliestStart && latestEnd) {
+                reportData.stats.duration = (latestEnd - earliestStart) / 1000;
+            } else {
+                reportData.stats.duration = totalDuration / 1000;
+            }
+            
+            reportData.errorSummary = errorSummary;
+            reportData.tagSummary = tagSummary;
+            
+            // Re-render all tabs
+            renderSummaryTab();
+            renderTestsTab();
+            renderErrorsTab();
+        }
+
+        function renderSummaryTab() {
+            const stats = reportData.stats;
+            
+            document.getElementById('total-tests').textContent = stats.total;
+            document.getElementById('passed-tests').textContent = stats.passed;
+            document.getElementById('failed-tests').textContent = stats.failed;
+            document.getElementById('skipped-tests').textContent = stats.skipped;
+            document.getElementById('flaky-tests').textContent = stats.flaky;
+            
+            const startDate = new Date(stats.startTime);
+            const endDate = new Date(stats.endTime);
+            document.getElementById('start-time').textContent = startDate.toLocaleString();
+            document.getElementById('end-time').textContent = endDate.toLocaleString();
+            
+            const durationMin = Math.floor(stats.duration / 60);
+            const durationSec = Math.floor(stats.duration % 60);
+            document.getElementById('duration').textContent = `${durationMin}m ${durationSec}s`;
+
+            renderCharts();
+            renderTagTable();
+        }
+
+        function renderCharts() {
+            const stats = reportData.stats;
+
+            // Destroy existing chart if it exists
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const ctx1 = document.getElementById('resultsChart').getContext('2d');
+            chartInstance = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed', 'Skipped', 'Flaky'],
+                    datasets: [{
+                        data: [stats.passed, stats.failed, stats.skipped, stats.flaky],
+                        backgroundColor: ['#48bb78', '#f56565', '#ed8936', '#4299e1'],
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 13,
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTagTable() {
+            const tagSummary = reportData.tagSummary;
+            const tbody = document.getElementById('tag-table-body');
+            tbody.innerHTML = '';
+
+            for (const [tag, counts] of Object.entries(tagSummary)) {
+                const total = counts.passed + counts.failed + counts.skipped + (counts.flaky || 0);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${tag}</strong></td>
+                    <td style="color: var(--success-color); font-weight: 600;">${counts.passed}</td>
+                    <td style="color: var(--danger-color); font-weight: 600;">${counts.failed}</td>
+                    <td style="color: var(--warning-color); font-weight: 600;">${counts.skipped}</td>
+                    <td style="color: var(--flaky-color); font-weight: 600;">${counts.flaky || 0}</td>
+                    <td><strong>${total}</strong></td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function renderTestsTab() {
+            const container = document.getElementById('tests-list');
+            container.innerHTML = '';
+
+            const filteredTests = reportData.tests.filter(test => {
+                if (currentFilter !== 'all' && test.status !== currentFilter) {
+                    return false;
+                }
+                if (searchTerm && !test.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    return false;
+                }
+                return true;
+            });
+
+            if (filteredTests.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 50px; color: var(--text-secondary);">No tests found matching the current filter</p>';
+                return;
+            }
+
+            filteredTests.forEach((test, index) => {
+                const div = document.createElement('div');
+                div.className = `test-list-item ${test.status === 'expected' ? 'passed' : test.status === 'unexpected' ? 'failed' : test.status}`;
+                div.setAttribute('data-test-id', test.id);
+                
+                const statusClass = `status-${test.status === 'expected' ? 'passed' : test.status === 'unexpected' ? 'failed' : test.status}`;
+                const statusText = test.status === 'expected' ? 'passed' : test.status === 'unexpected' ? 'failed' : test.status;
+                
+                const testResult = test.tests[0] || {};
+                const duration = testResult.duration || 0;
+                const durationText = `${(duration / 1000).toFixed(2)}s`;
+
+                div.innerHTML = `
+                    <div class="test-item-title">${test.title}</div>
+                    <div style="color: var(--text-secondary); font-size: 0.85em; margin: 5px 0;">📁 ${test.file}:${test.line}</div>
+                    <div class="test-item-meta">
+                        <span class="test-status ${statusClass}">${statusText}</span>
+                        <span class="test-duration">⏱️ ${durationText}</span>
+                        <div class="test-tags">
+                            ${test.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+
+                div.onclick = () => showTestDetails(test, div);
+                container.appendChild(div);
+            });
+        }
+
+        function showTestDetails(test, element) {
+            document.querySelectorAll('.test-list-item').forEach(item => item.classList.remove('selected'));
+            element.classList.add('selected');
+
+            const sidebar = document.getElementById('test-details-sidebar');
+            const content = document.getElementById('test-details-content');
+            
+            const testResult = test.tests[0] || {};
+            const statusClass = `status-${test.status === 'expected' ? 'passed' : test.status === 'unexpected' ? 'failed' : test.status}`;
+            const statusText = test.status === 'expected' ? 'passed' : test.status === 'unexpected' ? 'failed' : test.status;
+
+            let retryTabsHtml = '';
+            let retryContentHtml = '';
+            
+            if (test.tests.length > 1) {
+                retryTabsHtml = '<div class="retry-tabs-container"><div class="retry-tabs">';
+                test.tests.forEach((result, index) => {
+                    const attemptStatus = result.status === 'passed' ? 'passed' : (result.status === 'failed' || result.status === 'timedOut') ? 'failed' : result.status;
+                    const attemptIcon = attemptStatus === 'passed' ? '✅' : attemptStatus === 'failed' ? '❌' : '⏭️';
+                    const activeClass = index === 0 ? 'active' : '';
+                    retryTabsHtml += `
+                        <button class="retry-tab ${activeClass}" data-retry-index="${index}">
+                            <span class="retry-tab-icon">${attemptIcon}</span>
+                            <span>Attempt ${index + 1}</span>
+                        </button>
+                    `;
+                });
+                retryTabsHtml += '</div></div>';
+                
+                test.tests.forEach((result, index) => {
+                    const activeClass = index === 0 ? 'active' : '';
+                    retryContentHtml += `<div class="retry-content ${activeClass}" data-retry-index="${index}">${renderTestDetails(result)}</div>`;
+                });
+            } else {
+                retryContentHtml = renderTestDetails(testResult);
+            }
+
+            content.innerHTML = `
+                <button class="close-details" onclick="closeTestDetails()">✕</button>
+                <div class="test-details-header">
+                    <div class="test-details-title">${test.title}</div>
+                    <div style="margin-top: 10px;">
+                        <span class="test-status ${statusClass}">${statusText}</span>
+                        <span style="margin-left: 10px; color: var(--text-secondary);">📁 ${test.file}:${test.line}</span>
+                    </div>
+                    <div class="test-tags" style="margin-top: 10px;">
+                        ${test.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+                ${retryTabsHtml}
+                ${retryContentHtml}
+            `;
+
+            // Add click handlers for retry tabs
+            if (test.tests.length > 1) {
+                const retryTabs = content.querySelectorAll('.retry-tab');
+                retryTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const retryIndex = this.getAttribute('data-retry-index');
+                        
+                        // Update active tab
+                        content.querySelectorAll('.retry-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update active content
+                        content.querySelectorAll('.retry-content').forEach(c => c.classList.remove('active'));
+                        content.querySelector(`.retry-content[data-retry-index="${retryIndex}"]`).classList.add('active');
+                    });
+                });
+            }
+
+            sidebar.classList.add('active');
+        }
+
+        function closeTestDetails() {
+            document.getElementById('test-details-sidebar').classList.remove('active');
+            document.querySelectorAll('.test-list-item').forEach(item => item.classList.remove('selected'));
+        }
+
+        // Function to strip ANSI color codes and format error messages
+        function stripAnsiCodes(text) {
+            if (!text) return text;
+            // Remove ANSI escape codes
+            return text.replace(/\x1b\[[0-9;]*m/g, '')
+                      .replace(/\[[\d;]+m/g, '')
+                      .replace(/\[0m/g, '');
+        }
+
+        function renderTestDetails(result) {
+            let html = '';
+
+            if (result.steps && result.steps.length > 0) {
+                html += '<div class="test-steps"><h3>Test Steps</h3>';
+                result.steps.forEach(step => {
+                    const stepError = step.error;
+                    const stepIcon = stepError ? '❌' : '✅';
+                    const stepClass = stepError ? 'step-failed' : 'step-passed';
+                    const stepTitle = step.title || step.name || 'Step';
+                    
+                    html += `<div class="step-item ${stepClass}">
+                        <span class="step-icon">${stepIcon}</span>
+                        <span>${stepTitle}</span>
+                    </div>`;
+                });
+                html += '</div>';
+            }
+
+            if (result.error && result.error.message) {
+                const cleanMessage = stripAnsiCodes(result.error.message);
+                const cleanSnippet = result.error.snippet ? stripAnsiCodes(result.error.snippet) : '';
+                html += `
+                    <div class="error-section">
+                        <h3>❌ Error</h3>
+                        <p><strong>${cleanMessage}</strong></p>
+                        ${cleanSnippet ? `<pre>${cleanSnippet}</pre>` : ''}
+                    </div>
+                `;
+            }
+
+            if (result.stdout && result.stdout.length > 0) {
+                html += '<div class="console-log"><h3 style="color: var(--text-secondary); margin-bottom: 10px;">📄 Console Output</h3>';
+                result.stdout.forEach(log => {
+                    html += `<div>${log.text || log}</div>`;
+                });
+                html += '</div>';
+            }
+
+            if (result.stderr && result.stderr.length > 0) {
+                html += '<div class="console-log"><h3 style="color: var(--danger-color); margin-bottom: 10px;">⚠️ Error Output</h3>';
+                result.stderr.forEach(log => {
+                    html += `<div style="color: var(--danger-color);">${log.text || log}</div>`;
+                });
+                html += '</div>';
+            }
+
+            if (result.attachments && result.attachments.length > 0) {
+                html += '<div class="attachments"><h3>📎 Attachments</h3>';
+                result.attachments.forEach((attachment, idx) => {
+                    const contentType = attachment.contentType || '';
+                    const name = attachment.name || `Attachment ${idx}`;
+                    
+                    // Determine icon based on attachment type
+                    let icon = '📎';
+                    if (name === 'trace' || name.toLowerCase().includes('trace') || 
+                        contentType.includes('zip') || (attachment.path && attachment.path.endsWith('.zip'))) {
+                        icon = '🎬'; // Trace file icon
+                    } else if (contentType.includes('image')) {
+                        icon = '🖼️';
+                    } else if (contentType.includes('video')) {
+                        icon = '🎥';
+                    } else if (contentType.includes('html')) {
+                        icon = '📄';
+                    }
+                    
+                    const attachmentData = JSON.stringify(attachment).replace(/"/g, '&quot;');
+                    
+                    html += `
+                        <button class="attachment-btn" onclick='openAttachment(${attachmentData})'>
+                            ${icon} ${name}
+                        </button>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            return html || '<p style="color: var(--text-secondary);">No additional details available</p>';
+        }
+
+        function renderErrorsTab() {
+            const container = document.getElementById('errors-container');
+            container.innerHTML = '';
+
+            const errorSummary = reportData.errorSummary;
+            
+            if (Object.keys(errorSummary).length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 50px; color: var(--text-secondary);">No errors found! 🎉</p>';
+                return;
+            }
+
+            const errorTests = {};
+            reportData.tests.forEach(test => {
+                if (test.status === 'unexpected' && test.tests[0]?.error) {
+                    const errorMsg = test.tests[0].error.message;
+                    const errorKey = errorMsg.split('\n')[0].substring(0, 100);
+                    if (!errorTests[errorKey]) {
+                        errorTests[errorKey] = [];
+                    }
+                    errorTests[errorKey].push(test);
+                }
+            });
+
+            const sortedErrors = Object.entries(errorSummary).sort((a, b) => b[1] - a[1]);
+
+            sortedErrors.forEach(([errorMsg, count]) => {
+                const div = document.createElement('div');
+                div.className = 'error-item';
+                
+                const tests = errorTests[errorMsg] || [];
+                
+                div.innerHTML = `
+                    <div class="error-header">
+                        <div class="error-message">${errorMsg}</div>
+                        <div class="error-count">${count} test${count > 1 ? 's' : ''}</div>
+                    </div>
+                    <div class="error-tests">
+                        <strong>Affected Tests:</strong>
+                        ${tests.map(test => `
+                            <a href="#" class="error-test-link" onclick="navigateToTest('${test.id}'); return false;">
+                                📌 ${test.title}
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        function navigateToTest(testId) {
+            currentTab = 'tests';
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab')[1].classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('tests-tab').classList.add('active');
+
+            setTimeout(() => {
+                const testElement = document.querySelector(`[data-test-id="${testId}"]`);
+                if (testElement) {
+                    testElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    const test = reportData.tests.find(t => t.id === testId);
+                    if (test) {
+                        showTestDetails(test, testElement);
+                    }
+                }
+            }, 100);
+        }
+
+        function openAttachment(attachment) {
+            const contentType = attachment.contentType || '';
+            const name = attachment.name || 'Attachment';
+            const path = attachment.path || '';
+            const body = attachment.body || '';
+            
+            // Handle trace files - open in standalone trace viewer
+            if (name === 'trace' || name.toLowerCase().includes('trace') || 
+                contentType.includes('zip') || path.endsWith('.zip')) {
+                if (path) {
+                    // Open in standalone trace viewer HTML
+                    const traceViewerUrl = `trace-viewer.html?trace=${encodeURIComponent(path)}`;
+                    window.open(traceViewerUrl, '_blank');
+                } else {
+                    alert('Trace file path not available. Please ensure the trace file is accessible.');
+                }
+                return;
+            }
+            
+            if (contentType.includes('html') || name.endsWith('.html')) {
+                if (path) {
+                    window.open(path, '_blank');
+                } else if (body) {
+                    const newWindow = window.open();
+                    newWindow.document.write(atob(body));
+                    newWindow.document.close();
+                } else {
+                    alert('HTML file path not available');
+                }
+                return;
+            }
+            
+            if (contentType.includes('image') || contentType.includes('video')) {
+                showMediaOverlay(attachment);
+                return;
+            }
+            
+            if (path) {
+                window.open(path, '_blank');
+            } else {
+                alert(`Attachment: ${name}\nType: ${contentType}\nPath: ${path || 'Not available'}`);
+            }
+        }
+
+        function showMediaOverlay(attachment) {
+            const overlay = document.getElementById('media-overlay');
+            const title = document.getElementById('media-title');
+            const content = document.getElementById('media-content');
+            const contentType = attachment.contentType || '';
+            const name = attachment.name || 'Media';
+            const path = attachment.path || '';
+            const body = attachment.body || '';
+            
+            title.textContent = name;
+            content.innerHTML = '';
+            
+            if (contentType.includes('image')) {
+                const img = document.createElement('img');
+                if (path) {
+                    img.src = path;
+                } else if (body) {
+                    img.src = `data:${contentType};base64,${body}`;
+                }
+                img.alt = name;
+                img.onerror = () => {
+                    content.innerHTML = '<p style="color: white;">Failed to load image</p>';
+                };
+                content.appendChild(img);
+            } else if (contentType.includes('video')) {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.autoplay = true;
+                if (path) {
+                    video.src = path;
+                } else if (body) {
+                    video.src = `data:${contentType};base64,${body}`;
+                }
+                video.onerror = () => {
+                    content.innerHTML = '<p style="color: white;">Failed to load video</p>';
+                };
+                content.appendChild(video);
+            }
+            
+            overlay.classList.add('active');
+        }
+
+        function closeMediaOverlay() {
+            const overlay = document.getElementById('media-overlay');
+            const content = document.getElementById('media-content');
+            
+            const video = content.querySelector('video');
+            if (video) {
+                video.pause();
+                video.src = '';
+            }
+            
+            overlay.classList.remove('active');
+            content.innerHTML = '';
+        }
+
+        document.getElementById('media-overlay').addEventListener('click', (e) => {
+            if (e.target.id === 'media-overlay') {
+                closeMediaOverlay();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMediaOverlay();
+                closeTestDetails();
+            }
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                renderTestsTab();
+            });
+        });
+
+        document.getElementById('search-box').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderTestsTab();
+        });
+    </script>
+</body>
+</html>
