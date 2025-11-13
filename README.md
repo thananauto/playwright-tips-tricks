@@ -138,7 +138,7 @@ All test-related code is organized inside the `tests` folder. Below is an overvi
 - Visual Storytelling
 - Smart error tracking
 - Zero typing
-- Refer this article for more [details](https://medium.com/@thananjayan1988/transforming-ui-testing-harnessing-har-files-in-playwright-520ae03227da)
+- Refer this article for more [details](https://medium.com/@thananjayan1988/enhancing-playwright-reports-better-filtering-better-insights-d6c9f1d41c3f?postPublishedType=initial)
 
 ## 📌 Contribution Guidelines
 
