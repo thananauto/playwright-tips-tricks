@@ -121,7 +121,7 @@ All test-related code is organized inside the `tests` folder. Below is an overvi
 ### 9️⃣ Report analysis by AI
 - Ask the AI to analyse the `**.json` report
 - Add the Summary report as PR comment for every build breaks
-- Refer my article [here](https://medium.com/@thananjayan1988](https://medium.com/@thananjayan1988/ai-powered-test-report-analysis-generating-execution-summaries-5010dbbb1991)
+- Refer my article [here](https://medium.com/@thananjayan1988/ai-powered-test-report-analysis-generating-execution-summaries-5010dbbb1991)
 
 ### 🔟 Configure your test data in different places in framework
 - Explains how to configure test data based on different scenario
