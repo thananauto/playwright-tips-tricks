@@ -140,6 +140,12 @@ All test-related code is organized inside the `tests` folder. Below is an overvi
 - Zero typing
 - Refer this article for more [details](https://medium.com/@thananjayan1988/enhancing-playwright-reports-better-filtering-better-insights-d6c9f1d41c3f?postPublishedType=initial)
 
+### 1️⃣3️⃣  Playwright-WebMcp([`test`](https://github.com/thananauto/nextjs-e-commerce-wo/tree/main/tests/e2e))
+- Filling forms with WebMcp tools using playwright
+- Retrieving the exposed tools on the given webpage
+- Refer this article for more [details](https://medium.com/@thananjayan1988/beyond-the-dom-how-playwright-v1-64-and-webmcp-are-rewriting-ui-automation-c4c7a29393d9)
+
+
 ## 📌 Contribution Guidelines
 
 🚀 **Want to contribute?** If you have any useful Playwright tips or code snippets, feel free to **submit a PR**!
